@@ -22,6 +22,7 @@ object Main {
     def balance(chars: List[Char]): Boolean = {
 
       def loop(counter: Int, chars: List[Char]): Int = {
+        // Ascii: 40 == ), 41 == (
         if (chars.isEmpty) counter else
         if (counter == 0 && chars.head == 41) 1 else
         if (chars.head == 40) loop(counter+1,chars.tail) else
@@ -34,5 +35,15 @@ object Main {
   /**
    * Exercise 3
    */
-    def countChange(money: Int, coins: List[Int]): Int = ???
+    def countChange(money: Int, coins: List[Int]): Int = {
+      if (money==0) 1 else
+      if (coins.isEmpty || money<coins.sorted.head) 0
+      else {
+        def loop(moneyloop: Int, agg: Int, coins: List[Int]): Int =
+          if (moneyloop == 0) 1
+          else agg * countChange(moneyloop - coins.head, coins)
+
+        loop(money, 1, coins)  + countChange(money, coins.tail)
+      }
+    }
   }
